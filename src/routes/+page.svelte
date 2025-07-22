@@ -1,22 +1,27 @@
 <script>
-   let board = Array(9).fill(null);
-   let currentPlayer = 'X'
-   
-   function handleClick(index) {
+  let board = Array(9).fill(null);
+  let currentPlayer = "X";
+
+  function handleClick(index) {
     if (board[index] === null) {
-        board[index] = currentPlayer;
+      board[index] = currentPlayer;
 
-        const winner = checkWinner(board);
-        if (winner) {
-          alert(`Le joueur ${winner} a gagné !`);
-          return; // on arrête la partie ici
-        }
+      const winner = checkWinner(board);
+      if (winner) {
+        alert(`Le joueur ${winner} a gagné !`);
+        return; // on arrête la partie ici
+      }
 
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      if (!board.includes(null)) {
+        alert("Match nul !");
+        return; // on arrête aussi la partie
+      }
+
+      currentPlayer = currentPlayer === "X" ? "O" : "X";
     }
-   }
+  }
 
-   function checkWinner(board) {
+  function checkWinner(board) {
     const winningCombos = [
       [0, 1, 2], // lignes
       [3, 4, 5],
@@ -25,7 +30,7 @@
       [1, 4, 7],
       [2, 5, 8],
       [0, 4, 8], // diagonales
-      [2, 4, 6]
+      [2, 4, 6],
     ];
 
     for (const [a, b, c] of winningCombos) {
@@ -35,10 +40,25 @@
     }
 
     return null;
-   }
+  }
 
-
+  function resetGame() {
+    board = Array(9).fill(null);
+    currentPlayer = "X";
+  }
 </script>
+
+<h1>Grille de test</h1>
+
+<div class="grid">
+  {#each board as cell, index}
+    <div class="cell" on:click={() => handleClick(index)}>
+      {cell}
+    </div>
+  {/each}
+</div>
+
+<button on:click={resetGame}> Rejouer </button>
 
 <style>
   .grid {
@@ -58,14 +78,11 @@
     border: 1px solid #ccc;
     cursor: pointer;
   }
+
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
 </style>
-
-<h1>Grille de test</h1>
-
-<div class="grid">
-    {#each board as cell, index}
-        <div class="cell" on:click={() => handleClick(index)}>
-            {cell}
-        </div>
-    {/each}
-</div>
