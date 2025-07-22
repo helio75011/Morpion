@@ -1,6 +1,8 @@
 <script>
   let board = Array(9).fill(null);
   let currentPlayer = "X";
+  let scoreX = 0;
+  let scoreO = 0;
 
   function handleClick(index) {
     if (board[index] === null) {
@@ -8,8 +10,14 @@
 
       const winner = checkWinner(board);
       if (winner) {
+        if (winner === "X") {
+          scoreX += 1;
+        } else if (winner === "O") {
+          scoreO += 1;
+        }
+
         alert(`Le joueur ${winner} a gagné !`);
-        return; // on arrête la partie ici
+        return;
       }
 
       if (!board.includes(null)) {
@@ -50,6 +58,11 @@
 
 <h1>Grille de test</h1>
 
+<div class="scores">
+  <p>Score X : {scoreX}</p>
+  <p>Score O : {scoreO}</p>
+</div>
+
 <div class="grid">
   {#each board as cell, index}
     <div class="cell" on:click={() => handleClick(index)}>
@@ -84,5 +97,15 @@
     padding: 10px 20px;
     font-size: 1rem;
     cursor: pointer;
+  }
+
+  .scores {
+    display: flex;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .scores p {
+    margin-right: 20px;
   }
 </style>
