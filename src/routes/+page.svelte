@@ -71,6 +71,8 @@
   {/each}
 </div>
 
+<p>Au tour de {currentPlayer}</p>
+
 <button on:click={resetGame}> Rejouer </button>
 
 <style>
