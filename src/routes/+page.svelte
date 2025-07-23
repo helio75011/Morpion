@@ -3,30 +3,35 @@
   let currentPlayer = "X";
   let scoreX = 0;
   let scoreO = 0;
+  let gameOver = false;
 
   function handleClick(index) {
-    if (board[index] === null) {
-      board[index] = currentPlayer;
-
-      const winner = checkWinner(board);
-      if (winner) {
-        if (winner === "X") {
-          scoreX += 1;
-        } else if (winner === "O") {
-          scoreO += 1;
-        }
-
-        alert(`Le joueur ${winner} a gagné !`);
-        return;
-      }
-
-      if (!board.includes(null)) {
-        alert("Match nul !");
-        return; // on arrête aussi la partie
-      }
-
-      currentPlayer = currentPlayer === "X" ? "O" : "X";
+    if (gameOver || board[index] !== null) {
+      return;
     }
+
+    board[index] = currentPlayer;
+
+    const winner = checkWinner(board);
+    if (winner) {
+      gameOver = true;
+      if (winner === "X") {
+        scoreX += 1;
+      } else if (winner === "O") {
+        scoreO += 1;
+      }
+
+      alert(`Le joueur ${winner} a gagné !`);
+      return;
+    }
+
+    if (!board.includes(null)) {
+      gameOver = true;
+      alert("Match nul !");
+      return; // on arrête aussi la partie
+    }
+
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
   }
 
   function checkWinner(board) {
@@ -53,6 +58,7 @@
   function resetGame() {
     board = Array(9).fill(null);
     currentPlayer = "X";
+    gameOver = false;
   }
 </script>
 
